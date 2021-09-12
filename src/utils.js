@@ -1,5 +1,11 @@
 'use strict';
 
+const getDoubleCount = (number) => number < 10 ? `0${number}` : number;
+
+const getRandomObjectProperty = (object) => {
+  return object[Object.keys(object)[Math.floor(Math.random() * Object.keys(object).length)]];
+};
+
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -17,6 +23,8 @@ const shuffle = (array) => {
 };
 
 module.exports = {
+  getDoubleCount,
   getRandomInt,
+  getRandomObjectProperty,
   shuffle
 };

@@ -1,5 +1,7 @@
 'use strict';
 
+const {getRandomInt, shuffle, getDoubleCount, getRandomObjectProperty} = require(`../../utils`);
+
 const DEFAULT_COUNT = 1;
 
 const TITLES = [
@@ -47,6 +49,23 @@ const PictureRestrict = {
   MIN: 1,
   MAX: 16,
 };
+
+const getPictureName = (minPictureNumber, maxPictureNumber) => {
+  return `item${getDoubleCount(getRandomInt(minPictureNumber, maxPictureNumber))}.jpg`;
+};
+
+const generateOffers = () => {
+  return {
+    title: TITLES[getRandomInt(0, TITLES.length - 1)],
+    picture: getPictureName(PictureRestrict.MIN, PictureRestrict.MAX),
+    description: shuffle(SENTENCES).slice(0, getRandomInt(1, SENTENCES.length - 1)).join(` `),
+    type: getRandomObjectProperty(OfferType),
+    sum: getRandomInt(SumRestrict.MIN, SumRestrict.MAX),
+    category: shuffle(CATEGORIES).slice(0, getRandomInt(1, CATEGORIES.length - 1))
+  };
+};
+
+console.log(generateOffers());
 
 module.exports = {
   name: `--generate ${DEFAULT_COUNT}`,
