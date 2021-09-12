@@ -4,7 +4,7 @@ const fs = require(`fs`);
 const {getRandomInt, shuffle, getDoubleCount, getRandomObjectProperty} = require(`../../utils`);
 
 const DEFAULT_COUNT = 1;
-const FILE_NAME = `mockOffers.txt`;
+const FILE_NAME = `mocks.json`;
 
 const TITLES = [
   `Продам книги Стивена Кинга`,
