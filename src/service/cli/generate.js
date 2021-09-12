@@ -1,6 +1,6 @@
 'use strict';
 
-const DEFAULT_COUNT = 10;
+const DEFAULT_COUNT = 1;
 
 const TITLES = [
   `Продам книги Стивена Кинга`,
