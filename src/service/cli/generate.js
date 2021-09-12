@@ -1,8 +1,10 @@
 'use strict';
 
+const fs = require(`fs`);
 const {getRandomInt, shuffle, getDoubleCount, getRandomObjectProperty} = require(`../../utils`);
 
-const DEFAULT_COUNT = 2;
+const DEFAULT_COUNT = 1;
+const FILE_NAME = `mockOffers.txt`;
 
 const TITLES = [
   `Продам книги Стивена Кинга`,
@@ -72,8 +74,18 @@ const generateOffers = (offersCount) => {
 };
 
 module.exports = {
-  name: `--generate ${DEFAULT_COUNT}`,
-  run() {
-    generateOffers(DEFAULT_COUNT);
+  name: `--generate`,
+  run(args) {
+    const [count] = args;
+    const offerCount = Number.parseInt(count, 10) || DEFAULT_COUNT;
+    const content = JSON.stringify(generateOffers(offerCount));
+
+    fs.writeFile(FILE_NAME, content, (err) => {
+      if (err) {
+        return console.error(`Can't write data to file...`);
+      }
+
+      return console.info(`Operation success. File created.`);
+    });
   }
 };
