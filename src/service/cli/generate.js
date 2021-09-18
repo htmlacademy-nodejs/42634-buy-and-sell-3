@@ -2,6 +2,8 @@
 
 const util = require(`util`);
 const fs = require(`fs`);
+const chalk = require(`chalk`);
+
 const {getRandomInt, shuffle, getDoubleCount, getRandomObjectProperty} = require(`../../utils`);
 
 const DEFAULT_COUNT = 1;
@@ -84,7 +86,7 @@ module.exports = {
     const writeFilePromise = util.promisify(fs.writeFile);
 
     await writeFilePromise(FILE_NAME, content)
-      .then(() => console.log(`Operation success. File created.`))
-      .catch(() => console.error(`Can't write data to file...`));
+      .then(() => console.info(chalk.green(`Operation success. File created.`)))
+      .catch(() => console.error(chalk.red(`Can't write data to file...`)));
   }
 };
