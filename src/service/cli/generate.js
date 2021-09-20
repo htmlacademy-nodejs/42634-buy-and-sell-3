@@ -9,6 +9,12 @@ const {getRandomInt, shuffle, getDoubleCount, getRandomObjectProperty} = require
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
 
+const MockFilePath = {
+  Sentences: `./data/sentences.txt`,
+  Titles: `./data/titles.txt`,
+  Categories: `./data/categories.txt`
+};
+
 const OfferType = {
   OFFER: `offer`,
   SALE: `sale`,
@@ -29,17 +35,29 @@ const getPictureName = (minPictureNumber, maxPictureNumber) => {
   return `item${getDoubleCount(getRandomInt(minPictureNumber, maxPictureNumber))}.jpg`;
 };
 
-const generateOffers = (offersCount) => {
+const readContent = async (path) => {
+  try {
+    const readFile = util.promisify(fs.readFile);
+    const content = await readFile(path, `utf8`);
+
+    return content.trim().split(`\n`);
+  } catch (error) {
+    console.error(chalk.red(error));
+    return [];
+  }
+};
+
+const generateOffers = (offersCount, titles, sentences, categories) => {
   const offers = [];
 
   for (let i = 0; i < offersCount; i++) {
     offers.push({
-      title: TITLES[getRandomInt(0, TITLES.length - 1)],
+      title: titles[getRandomInt(0, titles.length - 1)],
       picture: getPictureName(PictureRestrict.MIN, PictureRestrict.MAX),
-      description: shuffle(SENTENCES).slice(0, getRandomInt(1, SENTENCES.length - 1)).join(` `),
+      description: shuffle(sentences).slice(0, getRandomInt(1, sentences.length - 1)).join(` `),
       type: getRandomObjectProperty(OfferType),
       sum: getRandomInt(SumRestrict.MIN, SumRestrict.MAX),
-      category: shuffle(CATEGORIES).slice(0, getRandomInt(1, CATEGORIES.length - 1))
+      category: shuffle(categories).slice(0, getRandomInt(1, categories.length - 1))
     });
   }
 
@@ -51,7 +69,12 @@ module.exports = {
   async run(args) {
     const [count] = args;
     const offerCount = Number.parseInt(count, 10) || DEFAULT_COUNT;
-    const content = JSON.stringify(generateOffers(offerCount));
+    const content = JSON.stringify(
+        generateOffers(offerCount,
+            await readContent(MockFilePath.Titles),
+            await readContent(MockFilePath.Sentences),
+            await readContent(MockFilePath.Categories))
+    );
 
     const writeFilePromise = util.promisify(fs.writeFile);
 
