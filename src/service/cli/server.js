@@ -7,7 +7,13 @@ const FILENAME = `mocks.js`;
 
 module.exports = {
   name: `--server`,
-  async run() {
+  async run(args) {
+    const [enteredPort] = args;
+    const port = Number.parseInt(enteredPort, 10) || DEFAULT_PORT;
 
+    http.createServer(onClientConnect)
+      .listen(port)
+      .on(`listening`, () => console.info(chalk.green(`Ожидаю соединений на ${port}`)))
+      .on(`error`, ({message}) => console.error(chalk.red(`Ошибка при создании сервера: ${message}`)));
   }
-}
+};
