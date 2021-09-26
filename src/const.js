@@ -2,6 +2,11 @@
 
 const NOT_FOUND_MESSAGE = `Not found`;
 
+const ExitCode = {
+  success: 0,
+  fail: 1
+};
+
 const HttpCode = {
   OK: 200,
   NOT_FOUND: 404,
@@ -12,5 +17,6 @@ const HttpCode = {
 
 module.exports = {
   NOT_FOUND_MESSAGE,
-  HttpCode
+  HttpCode,
+  ExitCode
 };
