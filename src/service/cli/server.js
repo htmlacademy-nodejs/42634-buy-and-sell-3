@@ -6,7 +6,7 @@ const http = require(`http`);
 const {HttpCode, NOT_FOUND_MESSAGE} = require(`../../const`);
 
 const DEFAULT_PORT = 3000;
-const FILENAME = `mocks.js`;
+const FILENAME = `mocks.json`;
 
 module.exports = {
   name: `--server`,
@@ -40,6 +40,7 @@ module.exports = {
             const message = mocks.map((post) => `<li>${post.title}</li>`).join(``);
             sendResponse(res, HttpCode.OK, `<ul>${message}</ul>`);
           } catch (error) {
+            console.error(chalk.red(error));
             sendResponse(res, HttpCode.NOT_FOUND, NOT_FOUND_MESSAGE);
           }
 
